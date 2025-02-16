@@ -1,0 +1,38 @@
+name: Deploy project
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Configure kubectl
+        run: aws eks update-kubeconfig --name ${{ vars.K8S_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+
+      - name: Deploy to Kubernetes
+        uses: Azure/k8s-deploy@v5
+        with:
+          manifests: |
+            ./k8s/hpa.yaml
+            ./k8s/ms-payment-deployment.yaml
+          images: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ vars.DOCKER_IMAGE_DEPLOY_VERSION }}
+

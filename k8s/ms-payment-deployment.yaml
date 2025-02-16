@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-payment
+  template:
+    metadata:
+      labels:
+        app: ms-payment
+    spec:
+      containers:
+        - name: ms-payment
+          image: rodrigotrancoso/fiap-tech-challenge-ms-payment
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3001
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ms-payment-secret
+                  key: postgres_host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: ms-payment-secret
+                  key: postgres_port
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ms-payment-secret
+                  key: postgres_user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ms-payment-secret
+                  key: postgres_password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: ms-payment-secret
+                  key: postgres_database
+          livenessProbe:
+            httpGet:
+              path: /health-check
+              port: 3001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-payment
+spec:
+  type: LoadBalancer
+  selector:
+    app: ms-payment
+  ports:
+    - port: 80
+      targetPort: 3001
