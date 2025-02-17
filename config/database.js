@@ -6,11 +6,11 @@ import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize({
   dialect: 'postgres',
-  host: process.env.postgres_host || 'localhost',
-  port: process.env.postgres_port || 5432,
-  database: process.env.postgres_database || 'fiapdb',
-  username: process.env.postgres_user || 'admin',
-  password: process.env.postgres_password || 'admin123',
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 5432,
+  database: process.env.DB_NAME || 'fiapdb',
+  username: process.env.DB_USER || 'admin',
+  password: process.env.DB_PASSWORD || 'admin123',
   logging: false
 });
 

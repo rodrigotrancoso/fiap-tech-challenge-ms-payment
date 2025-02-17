@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/**'
       - 'index.js'
+      - 'config/database.js'
       - 'Dockerfile'
     branches:
       - master
