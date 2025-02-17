@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: ms-payment
-          image: rodrigotrancoso/fiap-tech-challenge-ms-payment
+          image: 640168416591.dkr.ecr.us-east-1.amazonaws.com/fastfood/ms-payment:latest
           resources:
             limits:
               memory: "128Mi"
