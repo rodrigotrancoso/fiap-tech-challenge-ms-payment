@@ -11,7 +11,13 @@ const sequelize = new Sequelize({
   database: process.env.DB_NAME || 'fiapdb',
   username: process.env.DB_USER || 'admin',
   password: process.env.DB_PASSWORD || 'admin123',
-  logging: false
+  logging: false,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false, // 🔹 Aceita qualquer certificado SSL
+    }
+  }
 });
 
 export default sequelize;
