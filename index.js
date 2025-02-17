@@ -13,7 +13,7 @@ app.use(express.json());
 app.use("/api/v1/payments", paymentRoutes);
 
 app.get("/health-check", (req, res) => {
-  res.send("Health check passed");
+  res.send("Health check passed!");
 });
 
 sequelize.authenticate().then(() => {
