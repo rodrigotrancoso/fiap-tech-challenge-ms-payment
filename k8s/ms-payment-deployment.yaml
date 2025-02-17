@@ -12,6 +12,7 @@ spec:
       labels:
         app: ms-payment
     spec:
+      serviceAccountName: rds-service-account
       containers:
         - name: ms-payment
           image: 640168416591.dkr.ecr.us-east-1.amazonaws.com/fastfood/ms-payment:latest
