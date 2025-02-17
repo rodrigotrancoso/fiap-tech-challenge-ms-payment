@@ -32,6 +32,7 @@ spec:
                 secretKeyRef:
                   name: ms-payment-secret
                   key: postgres_port
+                  optional: true
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
